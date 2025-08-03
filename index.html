@@ -1,0 +1,66 @@
+Okay, it seems that Charminar model is wider than we thought\! My apologies for the repeated adjustments.
+
+Let's move the information panel even **much further forward** on the Z-axis, very close to your starting camera position. This should definitely place it clear of any part of Charminar.
+
+Here is the **complete code** with the `infoPanel`'s position adjusted significantly forward:
+
+```html
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Charminar Virtual Tour</title>
+    <script src="https://aframe.io/releases/1.5.0/aframe.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe-extras@6.2.0/dist/aframe-extras.min.js"></script> 
+    <script src="https://unpkg.com/aframe-text-geometry-component@^0.5.0/dist/aframe-text-geometry-component.min.js"></script>
+  </head>
+  <body>
+    <a-scene>
+      <a-assets>
+        <a-asset-item id="charminarModel" src="charminar.glb"></a-asset-item>
+      </a-assets>
+
+      <a-entity gltf-model="#charminarModel" position="0 2 0" scale="50 50 50"></a-entity> 
+
+      <a-plane position="0 -0.01 0" rotation="-90 0 0" width="100" height="100" color="#7BC8A4"></a-plane>
+
+      <a-sky color="#ADD8E6"></a-sky> 
+
+      <a-entity 
+          camera 
+          look-controls 
+          wasd-controls="acceleration: 100" 
+          position="0 5 20"
+          cursor="rayOrigin: mouse" 
+      ></a-entity> 
+
+      <a-box 
+          position="5 5 10"  color="yellow"     width="1" height="1" depth="1" opacity="1"   clickable         
+      ></a-box>
+
+      <a-entity 
+          id="infoPanel" 
+          visible="false"  
+          position="5 5 18" text-geometry="value: Charminar is a monument and mosque located in Hyderabad, Telangana, India. Built in 1591, it is a global icon of Hyderabad.; size: 0.2; height: 0.05;" 
+          material="color: white; opacity: 0.9"
+          geometry="primitive: plane; width: 4; height: 1.5"
+          rotation="0 0 0" 
+      ></a-entity>
+
+      <script>
+        AFRAME.registerComponent('clickable', {
+          init: function () {
+            var el = this.el; 
+            el.addEventListener('click', function () {
+              console.log('Hotspot clicked!'); 
+              var infoPanel = document.querySelector('#infoPanel'); 
+              var isVisible = infoPanel.getAttribute('visible'); 
+              infoPanel.setAttribute('visible', !isVisible); // Toggle visibility
+              console.log('Info panel visibility toggled to:', !isVisible); 
+            });
+          }
+        });
+      </script>
+    </a-scene>
+  </body>
+</html>
+```
